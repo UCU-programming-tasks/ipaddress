@@ -271,6 +271,37 @@ def invert_address(bytes_lst: List[int]) -> List[int]:
     return inverted
 
 
+def get_info(raw_address: str):
+    """
+    Get info about the given raw address.
+
+    >>> get_info('91.124.230.205/30')
+    IP address: 91.124.230.205
+    Network Address: 91.124.230.204
+    Broadcast Address: 91.124.230.207
+    Binary Subnet Mask:	11111111.11111111.11111111.11111100
+    First usable host IP: 91.124.230.205
+    Penultimate usable host IP: 91.124.230.205
+    Number of usable Hosts: 2
+    IP class: A
+    IP type private: False
+    """
+    print('IP address:', get_ip_from_raw_address(raw_address))
+    print('Network Address:', get_network_address_from_raw_address(raw_address))
+    print('Broadcast Address:', get_broadcast_address_from_raw_address(raw_address))
+    print('Binary Subnet Mask:', get_binary_mask_from_raw_address(raw_address))
+    print('First usable host IP:',
+          get_first_usable_ip_address_from_raw_address(raw_address))
+    print('Penultimate usable host IP:',
+          get_penultimate_usable_ip_address_from_raw_address(raw_address))
+    print('Number of usable Hosts:',
+          get_number_of_usable_hosts_from_raw_address(raw_address))
+    print('IP class:', get_ip_class_from_raw_address(raw_address))
+    print('IP type private:', check_private_ip_address_from_raw_address(raw_address))
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+    get_info(input())
