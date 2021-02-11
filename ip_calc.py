@@ -271,6 +271,40 @@ def invert_address(bytes_lst: List[int]) -> List[int]:
     return inverted
 
 
+def check_validity(raw_address: str) -> int:
+    """
+    Check if the input address is valid. Return 0 if it is valid,
+    1 if the prefix is missing and 2 if some other error occured.
+
+    >>> check_validity('0.225.32.19/25')
+    0
+    >>> check_validity('0.225.32.19')
+    1
+    >>> check_validity('0.225.32.19/52')
+    2
+    >>> check_validity('0.225.332.19/25')
+    2
+    >>> check_validity('0.225.332.19t/25')
+    2
+    """
+    try:
+        ip_address, prefix = raw_address.split('/')
+    except ValueError:
+        return 1
+
+    try:
+        for byte in ip_address.split('.'):
+            if not 0 <= int(byte) <= 255:
+                return 2
+
+        if not 0 <= int(prefix) <= 32:
+            return 2
+    except TypeError:
+        return 2
+
+    return 0
+
+
 def get_info(raw_address: str):
     """
     Get info about the given raw address.
@@ -286,6 +320,16 @@ def get_info(raw_address: str):
     IP class: A
     IP type private: False
     """
+    validity_code = check_validity(raw_address)
+
+    if validity_code == 1:
+        print('Missing prefix')
+        return
+
+    if validity_code == 2:
+        print('Error')
+        return
+
     print('IP address:', get_ip_from_raw_address(raw_address))
     print('Network Address:', get_network_address_from_raw_address(raw_address))
     print('Broadcast Address:', get_broadcast_address_from_raw_address(raw_address))
