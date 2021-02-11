@@ -1,1 +1,1 @@
-# Python command line project for validating the board of symbols
+# A Python module for getting information about IP addresses
